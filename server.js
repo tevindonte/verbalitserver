@@ -51,7 +51,11 @@ socketHandler(server);
 //app.use(helmet()); // Secure HTTP headers
 app.use(
   cors({
-    origin: "http://localhost:3000", // Frontend origin
+    origin: [
+      "https://verbalit.netlify.app", // Netlify subdomain
+      "https://verbalit.top", // Primary domain
+      "https://www.verbalit.top", // Redirected www domain
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // Allow cookies to be sent
@@ -2570,7 +2574,7 @@ app.post("/api/folders/share", async (req, res) => {
 
     // Generate a token for the folder
     const token = crypto.randomBytes(16).toString("hex");
-    const shareLink = `http://localhost:3000/folders/collaborate/${folderId}/${token}`;
+    const shareLink = `https://verbalit.top/folders/collaborate/${folderId}/${token}`;
 
     // Save token to the database
     await FolderShare.create({
@@ -2620,7 +2624,7 @@ app.post("/api/folders/invite", async (req, res) => {
       },
     });
 
-    const shareLink = `http://localhost:3000/folders/collaborate/${folderId}/${token}`;
+    const shareLink = `https://verbalit.top/folders/collaborate/${folderId}/${token}`;
     const emailContent = `<div>
       <p>You have been invited to collaborate on a folder.</p>
       <p>Role: <strong>${role}</strong></p>
@@ -2710,7 +2714,7 @@ app.post("/api/moodboards/:moodboardId/share", async (req, res) => {
       email: "",
     });
 
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+    const frontendUrl = process.env.FRONTEND_URL || "https://verbalit.top";
     const shareLink = `${frontendUrl}/moodboards/collaborate/${moodboardId}/${token}`;
 
     return res.status(200).json({ shareLink });
@@ -2759,7 +2763,7 @@ app.post("/api/moodboards/:moodboardId/invite", async (req, res) => {
     });
 
     const shareLink = `${
-      process.env.FRONTEND_URL || "http://localhost:3000"
+      process.env.FRONTEND_URL || "https://verbalit.top"
     }/moodboards/collaborate/${moodboardId}/${token}`;
     const emailContent = `
       <div>
@@ -2802,7 +2806,7 @@ app.get("/api/moodboards/collaborate/:moodboardId/:token", async (req, res) => {
     }
 
     const shareLink = `${
-      process.env.FRONTEND_URL || "http://localhost:3000"
+      process.env.FRONTEND_URL || "https://verbalit.top"
     }/moodboards/collaborate/${moodboardId}/${token}`;
 
     return res.status(200).json({
