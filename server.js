@@ -31,7 +31,7 @@ const MoodboardShare = require('./models/MoodboardShare'); // Adjust the path if
 // Increase the limit for JSON and URL-encoded payloads ///
 ////////
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 10000;
 //
 
 // 1) Create a raw HTTP server from the Express app
