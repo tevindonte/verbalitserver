@@ -55,6 +55,7 @@ app.use(
       "https://verbalit.netlify.app", // Netlify subdomain
       "https://verbalit.top", // Primary domain
       "https://www.verbalit.top", // Redirected www domain
+      "http://localhost:3000" // Local frontend for testing
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
