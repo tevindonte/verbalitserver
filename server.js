@@ -2560,6 +2560,54 @@ app.put("/api/notebook/pages/:pageId/link-folder", async (req, res) => {
 });
 
 
+app.get('/api/google-images', async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ error: "Missing search query (q) parameter." });
+  }
+  try {
+    const googleResponse = await axios.get('https://www.googleapis.com/customsearch/v1', {
+      params: {
+        q,
+        cx: process.env.CSE_ID,             // Uses e2b3cd62a1b354ad5
+        searchType: 'image',
+        rights: 'cc_publicdomain',          // Filters images for reuse
+        key: process.env.GOOGLE_API_KEY       // Your API key
+      }
+    });
+    res.json(googleResponse.data);
+  } catch (error) {
+    console.error("Error searching Google images:", error.message);
+    res.status(500).json({ error: "Failed to retrieve images." });
+  }
+});
+
+// Make sure you have configured UNSPLASH_ACCESS_KEY in your .env file.
+app.get('/api/unsplash-photos', async (req, res) => {
+  const { query, page = 1, per_page = 10 } = req.query;
+  if (!query) {
+    return res.status(400).json({ error: "Missing search query" });
+  }
+  try {
+    const response = await axios.get('https://api.unsplash.com/search/photos', {
+      params: {
+        query,
+        page,
+        per_page,
+        orientation: 'landscape', // or any filter you want to use
+      },
+      headers: {
+        Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error searching Unsplash:", error.message);
+    res.status(500).json({ error: "Failed to retrieve images." });
+  }
+});
+
+
 const FolderShare = require("./models/FolderShare"); // Import FolderShare model
 
 // Generate Share Link
