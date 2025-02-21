@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {
     // Set token in HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // false in dev
+      secure: false, // false in dev
       sameSite: "None", // Helps prevent CSRF
       maxAge: 60 * 60 * 1000, // 1 hour
     });
